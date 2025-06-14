@@ -22,7 +22,7 @@ let currentCheckins = new Map();
 let selectedImageBase64 = null;
 
 // --- EMOJI MAPPINGS ---
-const moodEmojis = ["", "😠", "😟", "😐", "🙂", "😊", "😄", "😁", "🥰", "🤩", "🥳"];
+const moodEmojis = ["", "😠", "�", "😐", "🙂", "😊", "😄", "😁", "🥰", "🤩", "🥳"];
 const itchinessEmojis = ["", "🙂", "🤔", "😐", "😒", "😟", "😫", "😖", "😡", "😭", "🌋"];
 const appearanceEmojis = ["", "🤢", "😟", "😐", "🙂", "😊", "✨", "🤩", "💖", "👑", "🦄"];
 const emojiMaps = {
@@ -416,3 +416,4 @@ dateInput.addEventListener('change', (e) => loadCheckinForDate(e.target.value));
 
 // --- Initialization ---
 window.onload = () => { setDefaultDate(); setupAuth(); };
+�
