@@ -32,7 +32,7 @@
 
         // --- EMOJI MAPPINGS ---
         const moodEmojis = ["", "😠", "😟", "😐", "🙂", "😊", "😄", "😁", "🥰", "🤩", "🥳"];
-        const itchinessEmojis = ["", "🙂", "🤔", "😐", "😒", "😟", "�", "😖", "😡", "😭", "🌋"];
+        const itchinessEmojis = ["", "🙂", "🤔", "😐", "😒", "😟", "😫", "😖", "😡", "😭", "🌋"];
         const appearanceEmojis = ["", "🤢", "😟", "😐", "🙂", "😊", "✨", "🤩", "💖", "👑", "🦄"];
         const emojiMaps = {
             mood: moodEmojis,
@@ -232,8 +232,8 @@
 
         function renderAllEntries() {
             foodLogContainer.innerHTML = '';
-            const allEntries = [...currentEntries, ...Array.from(currentCheckins.values())];
-            if (allEntries.length === 0) {
+            const allItems = [...currentEntries, ...Array.from(currentCheckins.values())];
+            if (allItems.length === 0) {
                 foodLogContainer.innerHTML = '<p class="text-gray-500 text-center py-4">No entries logged yet, Keenan. Add some!</p>';
                 exportCsvButton.disabled = true;
                 exportCsvButton.classList.add('opacity-50', 'cursor-not-allowed');
@@ -242,7 +242,7 @@
             exportCsvButton.disabled = false;
             exportCsvButton.classList.remove('opacity-50', 'cursor-not-allowed');
 
-            const groupedEntries = allEntries.reduce((acc, entry) => {
+            const groupedByDate = allItems.reduce((acc, entry) => {
                 const date = entry.date;
                 if (!acc[date]) acc[date] = { foods: [], checkin: null };
                 if (entry.mealType) acc[date].foods.push(entry);
@@ -250,9 +250,10 @@
                 return acc;
             }, {});
 
-            const sortedDates = Object.keys(groupedEntries).sort((a,b) => new Date(b) - new Date(a));
-            for (const date of sortedDates) {
-                const { foods, checkin } = groupedEntries[date];
+            const sortedDates = Object.keys(groupedByDate).sort((a,b) => new Date(b) - new Date(a));
+
+            sortedDates.forEach(date => {
+                const { foods, checkin } = groupedByDate[date];
                 foods.sort((a, b) => (a.loggedAt?.toMillis() || 0) - (b.loggedAt?.toMillis() || 0));
 
                 const dateHeader = document.createElement('h3');
@@ -289,7 +290,7 @@
                         li.className = 'bg-white p-4 rounded-lg shadow flex justify-between items-center';
                         li.innerHTML = `
                             <div>
-                                <p class="font-medium text-gray-800">${foodItems}</p>
+                                <p class="font-medium text-gray-800">${foodItems || "General Entry"}</p>
                                 <p class="text-sm text-gray-600">Meal: ${entry.mealType}</p>
                             </div>
                             <button data-id="${entry.id}" data-name="${foodItems}" class="delete-food-btn p-1 rounded hover:bg-red-100 focus:outline-none focus:ring-2 focus:ring-red-300">
@@ -300,7 +301,7 @@
                     });
                     foodLogContainer.appendChild(ul);
                 }
-            }
+            });
         }
         
         async function deleteFoodEntry(entryId) {
@@ -546,4 +547,3 @@
     </div>
 </body>
 </html>
-�
